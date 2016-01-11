@@ -37,7 +37,7 @@ def askLogin():
 
 def pollEventLoop():
     global sleeptime
-    while true:
+    while True:
       time.sleep(sleeptime)
       sleeptime = sleeptime + 1
       if sleeptime > 30:
@@ -72,7 +72,7 @@ def login(user, password):
       print("Login successfull!")
       global uid
       uid = obj["id"]
-      with open('~/.bla-config.json', 'w') as f:
+      with open('.bla-config.json', 'w') as f:
         f.write(json.dumps({"user":user, "uid":uid}))
       handleEvents(obj)
       pollEventLoop()
@@ -84,8 +84,8 @@ def initialize():
     #notification("Info", "System", "Listening for notifications.")
     global user
     global uid
-    if os.path.exists("config.json"):
-      with open("~/.bla-config.json', 'r') as f:
+    if os.path.exists('.bla-config.json'):
+      with open('.bla-config.json', 'r') as f:
         data = json.loads(f.read())
         if "user" in data:
           user = data["user"]
