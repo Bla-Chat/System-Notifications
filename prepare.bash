@@ -1,3 +1,3 @@
 #!/bin/bash
 
-sudo apt-get install wxgtk2.8
+sudo apt-get install python-wxgtk2.8
