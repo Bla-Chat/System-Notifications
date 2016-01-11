@@ -1,0 +1,7 @@
+[Desktop Entry]
+Name=Bla Chat Notify Python Script
+Comment=Bla Chat notifications integrated into gnome.
+Exec=python /home/michael/.bla-gnome-notify.py
+Terminal=false
+Type=Application
+Categories=Network;
