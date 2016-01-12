@@ -21,7 +21,7 @@ For that you need to open gnome 'startup applications' and add a new entry.
 The entry you add must be specified as following
 ```
 name: 'Bla Chat'
-command: 'python /home/<youruser>/chechout/Bla/System-Notifications/bla-gnome-notify.py'
+command: 'python /home/<youruser>/checkout/Bla/System-Notifications/bla-gnome-notify.py'
 comment: 'Bla chat notification daemon.'
 ```
 
