@@ -7,6 +7,7 @@ This provides system notifications for bla.
 
 Clone the repo and run the preInstall.sh.
 ```bash
+cd ~/checkout/Bla
 git clone https://github.com/Bla-Chat/System-Notifications.git
 cd System-Notifications
 ./preInstall.sh
@@ -15,13 +16,17 @@ cd System-Notifications
 Now add the python script to the startup applications.
 For that you need to open gnome 'startup applications' and add a new entry.
 
-TODO Image how to open startup applications
+![Press start and search for startup applications](https://raw.githubusercontent.com/Bla-Chat/System-Notifications/master/images/StartupApplications.png)
 
 The entry you add must be specified as following
 ```
 name: 'Bla Chat'
-command: 'python /home/michael/chechout/Bla/System-Notifications/bla-gnome-notify.py'
+command: 'python /home/<youruser>/chechout/Bla/System-Notifications/bla-gnome-notify.py'
 comment: 'Bla chat notification daemon.'
 ```
 
-TODO Image how to fill out the dialog.
+![Add an entry to the startup applications](https://raw.githubusercontent.com/Bla-Chat/System-Notifications/master/images/EditStartupApplications.png)
+
+Now relog insert your bla chat credentials and enjoy notifications.
+
+![Enjoy the notifications](https://raw.githubusercontent.com/Bla-Chat/System-Notifications/master/images/Notification.png)
