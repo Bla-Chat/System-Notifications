@@ -17,7 +17,7 @@ sleeptime = 1
 class WindowsBalloonTip:
     def __init__(self):
         message_map = {
-                win32con.WM_DESTROY: self.OnDestroy,
+            win32con.WM_DESTROY: self.OnDestroy,
         }
         # Register the Window class.
         wc = WNDCLASS()
@@ -31,17 +31,14 @@ class WindowsBalloonTip:
                 0, 0, win32con.CW_USEDEFAULT, win32con.CW_USEDEFAULT, \
                 0, 0, hinst, None)
         UpdateWindow(self.hwnd)
-        iconPathName = os.path.abspath(os.path.join( sys.path[0], 
-"bla.png" ))
+        iconPathName = os.path.abspath(os.path.join( sys.path[0], "bla.png" ))
         icon_flags = win32con.LR_LOADFROMFILE | win32con.LR_DEFAULTSIZE
         try:
-           self.hicon = LoadImage(hinst, iconPathName, \
-                    win32con.IMAGE_ICON, 0, 0, icon_flags)
+           self.hicon = LoadImage(hinst, iconPathName, win32con.IMAGE_ICON, 0, 0, icon_flags)
         except:
           self.hicon = LoadIcon(0, win32con.IDI_APPLICATION)
         flags = NIF_ICON | NIF_MESSAGE | NIF_TIP
-        self.nid = (self.hwnd, 0, flags, win32con.WM_USER+20, self.hicon, 
-"BlaChat Notify")
+        self.nid = (self.hwnd, 0, flags, win32con.WM_USER+20, self.hicon, "BlaChat Notify")
         Shell_NotifyIcon(NIM_ADD, self.nid)
         # self.show_balloon(title, msg)
         #time.sleep(10)
@@ -49,8 +46,7 @@ class WindowsBalloonTip:
 
     def notify(self, title, msg):
         Shell_NotifyIcon(NIM_MODIFY, \
-                         (self.hwnd, 0, NIF_INFO, win32con.WM_USER+20,\
-                          self.hicon, "Bla Notification",msg,1000,title))
+                         (self.hwnd, 0, NIF_INFO, win32con.WM_USER+20, self.hicon, "Bla Notification",msg,1000,title))
 
     def OnDestroy(self, hwnd, msg, wparam, lparam):
         nid = (self.hwnd, 0)
@@ -84,17 +80,17 @@ def askLogin():
 def pollEventLoop():
     global sleeptime
     while True:
-      time.sleep(sleeptime)
-      sleeptime = sleeptime + 1
-      if sleeptime > 30:
-        sleeptime = 30
-      pollEvents()
+        time.sleep(sleeptime)
+        sleeptime = sleeptime + 1
+        if sleeptime > 30:
+            sleeptime = 30
+        pollEvents()
 
 def pollEvents():
     msg = json.dumps({"id":uid})
     params = urllib.urlencode({"msg":msg})
-    f = urllib.urlopen("https://www.ssl-id.de/bla.f-online.net/api/xjcp.php", params)
-    result = f.read()
+    api = urllib.urlopen("https://www.ssl-id.de/bla.f-online.net/api/xjcp.php", params)
+    result = api.read()
     #print(result)
     obj = json.loads(result)
     handleEvents(obj)
@@ -102,46 +98,46 @@ def pollEvents():
 def handleEvents(data):
     global sleeptime
     if "events" in data:
-      for e in data["events"]:
-        if e["type"] == "onMessage" and not e["nick"] == user:
-          notification(e["msg"], e["author"], e["text"])
-          sleeptime = 1
+        for e in data["events"]:
+            if e["type"] == "onMessage" and not e["nick"] == user:
+                notification(e["msg"], e["author"], e["text"])
+                sleeptime = 1
 
 def login(user, password):
     msg = json.dumps({"user":user, "pw":password})
     params = urllib.urlencode({"msg":msg})
-    f = urllib.urlopen("https://www.ssl-id.de/bla.f-online.net/api/xjcp.php", params)
-    result = f.read()
+    api = urllib.urlopen("https://www.ssl-id.de/bla.f-online.net/api/xjcp.php", params)
+    result = api.read()
     #print(result)
     obj = json.loads(result)
     if "id" in obj:
-      print("Login successfull!")
-      global uid
-      uid = obj["id"]
-      with open('.bla-config.json', 'w') as f:
-        f.write(json.dumps({"user":user, "uid":uid}))
-      handleEvents(obj)
-      pollEventLoop()
+        print("Login successfull!")
+        global uid
+        uid = obj["id"]
+        with open('.bla-config.json', 'w') as conf:
+            conf.write(json.dumps({"user":user, "uid":uid}))
+        handleEvents(obj)
+        pollEventLoop()
     else:
-      print("Username or password wrong!")
-      askLogin()
+        print("Username or password wrong!")
+        askLogin()
 
 def initialize():
     #notification("Info", "System", "Listening for notifications.")
     global user
     global uid
     if os.path.exists('.bla-config.json'):
-      with open('.bla-config.json', 'r') as f:
-        data = json.loads(f.read())
-        if "user" in data:
-          user = data["user"]
-        if "uid" in data:
-          uid = data["uid"]
+        with open('.bla-config.json', 'r') as f:
+            data = json.loads(f.read())
+            if "user" in data:
+                user = data["user"]
+            if "uid" in data:
+                uid = data["uid"]
     if user is not None and uid is not None:
-      pollEventLoop()
+        pollEventLoop()
     else:
-      notification("Login", "System", "No valid login availible.")
-      askLogin()
-      
+        notification("Login", "System", "No valid login availible.")
+        askLogin()
 
-initialize()    
+
+initialize()
